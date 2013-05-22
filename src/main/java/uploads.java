@@ -27,8 +27,9 @@ public class uploads extends HttpServlet {
         response.sendRedirect("/index.jsp") ;
         return;
     }
-    response.getWriter().println("DEL"+file.toURI());
-
+    // response.getWriter().println("DEL"+file.toURI());
+    boolean success = file.delete();
+    if(!success){response.sendError(HttpServletResponse.SC_NOT_FOUND);}
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
