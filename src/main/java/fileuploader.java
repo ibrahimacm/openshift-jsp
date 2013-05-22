@@ -12,40 +12,36 @@ import javax.servlet.http.Part;
 @WebServlet(name = "uploadFile",urlPatterns = {"/uploadFile"})
 @MultipartConfig
 public class fileuploader extends javax.servlet.http.HttpServlet {
-  protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+  protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response)
+      throws javax.servlet.ServletException, IOException {
     processRequest(request,response);
   }
 
-  protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+  protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response)
+      throws javax.servlet.ServletException, IOException {
     processRequest(request,response);
   }
 
   protected void processRequest(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-    PrintWriter out = response.getWriter();
     for (Part part : request.getParts()) {
       InputStream is = request.getPart(part.getName()).getInputStream();
-      int i = is.available();
-      byte[] b  = new byte[i];
+      byte[] b  = new byte[is.available()];
       is.read(b);
-      String fileName = getFileName(part);
-      FileOutputStream os = new FileOutputStream(System.getenv("OPENSHIFT_DATA_DIR") + fileName);
+      FileOutputStream os = new FileOutputStream(System.getenv("OPENSHIFT_DATA_DIR") + getFileName(part));
       os.write(b);
       is.close();
       response.sendRedirect("/index.jsp");
-          //      out.println(fileName + " was uploaded to " + System.getenv("OPENSHIFT_DATA_DIR"));
     }
   }
 
   private String getFileName(Part part) {
-    String partHeader = part.getHeader("content-disposition");
-
+    String res;
     for (String cd : part.getHeader("content-disposition").split(";")) {
       if (cd.trim().startsWith("filename")) {
-        return cd.substring(cd.indexOf('=') + 1).trim()
-                .replace("\"", "");
+        res= cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+        break;
       }
     }
-    return null;
-
+    return res;
   }
 }

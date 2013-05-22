@@ -11,15 +11,14 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(name = "uploads",urlPatterns = {"/uploads/*"})
 public class uploads extends HttpServlet {
 
-  int BUFFER_LENGTH = 4096;
+  static final int BUFFER_LENGTH = 4096;
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    String filePath = request.getRequestURI();
-    String destFile = filePath.replace("/uploads/","");
+    String destFile = request.getRequestURI().replace("/uploads/","");
     if (destFile.equals("")){
         response.sendRedirect("/index.jsp") ;
         return;
@@ -32,13 +31,8 @@ public class uploads extends HttpServlet {
 
     OutputStream output = response.getOutputStream();
     byte[] bytes = new byte[BUFFER_LENGTH];
-    int read = 0;
-    while (read != -1) {
-      read = input.read(bytes, 0, BUFFER_LENGTH);
-      if (read != -1) {
-        output.write(bytes, 0, read);
-        output.flush();
-      }
+    for(int read = 0; read != -1; read = input.read(bytes, 0, BUFFER_LENGTH)) {
+        if (read != -1) { output.write(bytes, 0, read); }
     }
 
     input.close();
