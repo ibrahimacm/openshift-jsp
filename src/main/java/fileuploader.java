@@ -35,7 +35,7 @@ public class fileuploader extends javax.servlet.http.HttpServlet {
   }
 
   private String getFileName(Part part) {
-    String res;
+    String res=null;
     for (String cd : part.getHeader("content-disposition").split(";")) {
       if (cd.trim().startsWith("filename")) {
         res= cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
