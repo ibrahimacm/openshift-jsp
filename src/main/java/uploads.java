@@ -27,7 +27,7 @@ public class uploads extends HttpServlet {
         response.sendRedirect("/index.jsp") ;
         return;
     }
-    response.getWriter().print("DEL"+file.getURI());
+    response.getWriter().println("DEL"+file.toURI());
 
   }
 
