@@ -16,14 +16,27 @@ public class uploads extends HttpServlet {
 
   }
 
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private File getFile(HttpServletRequest request){
+      String destFile = request.getRequestURI().replace("/uploads/","");
+      return destFile.equals("") ? null : new File(System.getenv("OPENSHIFT_DATA_DIR") + destFile);
+    }
 
-    String destFile = request.getRequestURI().replace("/uploads/","");
-    if (destFile.equals("")){
+  protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    File file = getFile(request);
+    if(file == null){
         response.sendRedirect("/index.jsp") ;
         return;
     }
-    File file = new File(System.getenv("OPENSHIFT_DATA_DIR") + destFile);
+    response.getWriter().print("DEL"+file.getURI());
+
+  }
+
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    File file = getFile(request);
+    if(file == null){
+        response.sendRedirect("/index.jsp") ;
+        return;
+    }
     InputStream input = new FileInputStream(file);
 
     response.setContentLength((int) file.length());
