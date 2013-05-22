@@ -16,7 +16,7 @@
   limitations under the License.
 -->
 <!-- The contents of this file will be loaded for each web application -->
-<Context>
+<Context path="/" aliases="static=${OPENSHIFT_DATA_DIR}">
 
     <!-- Default set of monitored resources -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
@@ -31,12 +31,12 @@
     <!--
     <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
     -->
-    
+
     <Resource name="jdbc/MysqlDS" auth="Container" type="javax.sql.DataSource"
                maxActive="20" maxIdle="5" maxWait="10000"
                username="${env.OPENSHIFT_MYSQL_DB_USERNAME}" password="${env.OPENSHIFT_MYSQL_DB_PASSWORD}" driverClassName="com.mysql.jdbc.Driver"
                url="jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/${env.OPENSHIFT_APP_NAME}"/>
-               
+
     <Resource name="jdbc/PostgreSQLDS" auth="Container" type="javax.sql.DataSource"
                maxActive="20" maxIdle="5" maxWait="10000"
                username="${env.OPENSHIFT_POSTGRESQL_DB_USERNAME}" password="${env.OPENSHIFT_POSTGRESQL_DB_PASSWORD}" driverClassName="org.postgresql.Driver"
