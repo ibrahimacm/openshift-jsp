@@ -3,3 +3,6 @@
 # build hook has been run but before the application has been started back
 # up again.  This script gets executed directly, so it could be python, php,
 # ruby, etc.
+
+ESCAPED=$(echo ${OPENSHIFT_DATA_DIR} | sed -e  "s/\//\\\\\//g")
+sed -i "s/\(\${OPENSHIFT_DATA_DIR}\)/${ESCAPED}/" ${OPENSHIFT_REPO_DIR}/.openshift/config/context.xml
