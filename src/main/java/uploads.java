@@ -17,7 +17,7 @@ public class uploads extends HttpServlet {
   }
 
     private File getFile(HttpServletRequest request){
-      String destFile = request.getRequestURI().replace("/uploads/","");
+        String destFile = request.getPathInfo().replace("/uploads/","");
       return destFile.equals("") ? null : new File(System.getenv("OPENSHIFT_DATA_DIR") + destFile);
     }
 
